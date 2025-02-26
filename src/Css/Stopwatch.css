@@ -1,0 +1,111 @@
+.timer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.CountUpDownTimeDisplay {
+    font-size: 4rem;
+    font-family: monospace;
+    margin-bottom: 1rem;
+    color: #FFFFFF
+}
+
+.InputList {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding-top: 0.5rem;
+}
+.InputTime {
+    border: 1px solid;
+    border-color: #d1d5db;
+    border-radius: 0.25rem;
+    font-size: 16px;
+    padding: 0.4rem;
+    width: 24vw;
+}
+
+.ButtonSetTime {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    border-radius: 0.25rem;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+}
+
+.ButtonSetTime:hover {
+    background-color: #45a049;
+}
+
+.ButtonList {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.ButtonStart {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+}
+
+.ButtonStart:hover {
+    background-color: #45a049;
+}
+
+.ButtonStop {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: #f44336;
+    border: none;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+}
+
+.ButtonStop:hover {
+    background-color: #da190b;
+}
+
+.ButtonReset {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: #008CBA;
+    border: none;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+}
+
+.ButtonReset:hover {
+    background-color: #0073aa;
+}
+
+.word {
+    font-size: 2rem;
+    font-family: monospace;
+    margin-bottom: 1rem;
+    color: #FFFFFF
+}

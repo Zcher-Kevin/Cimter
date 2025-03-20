@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
+import { useTimerCount } from '../context/TimerCountContext';
 import "../Css/Timer.css";
 
 /**
@@ -48,53 +49,58 @@ import "../Css/Timer.css";
  * @description Resets the timer to 0 and stops it.
  */
 function Timer() {
-    const [time, setTime] = useState(0);
-    const [isRunning, setIsRunning] = useState(false);
+    const { timers, startTimer, stopTimer, resetTimer, removeTimer, addTimer } = useTimerCount();
 
-    useEffect(() => {
-        let interval;
-        if (isRunning) {
-            interval = setInterval(() => {
-                setTime((time) => time + 1);
-            }, 1000);
-        } else {
-            clearInterval(interval);
-        }
-        return () => clearInterval(interval);
-    }, [isRunning, time]);
-
-    const formatofTime = (seconds) => {
+    const formatTime = (seconds) => {
         const hours = Math.floor(seconds / 3600).toString().padStart(2, "0");
         const minutes = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
         const second = (seconds % 60).toString().padStart(2, "0");
         return (
-          <>
-            {hours}<text className='word'>h</text>{minutes}<text className='word'>m</text>{second}<text className='word'>s</text>
-          </>
+            <>
+                {hours}<text className='word'>h</text>
+                {minutes}<text className='word'>m</text>
+                {second}<text className='word'>s</text>
+            </>
         );
     };
 
-
-    const handleStartStop = () => {
-        setIsRunning(!isRunning);
-    };
-
-    const handleReset = () => {
-        setTime(0);
-        setIsRunning(false);
-    };
-
-  return (
-    <div className="timer-container">
-      <div className="timer-display">{formatofTime(time)}</div>
-      <div className="timer-controls">
-        <button onClick={handleStartStop}>
-          {isRunning ? 'Stop' : 'Start'}
+    return (
+      <div className="timer-container">
+        <button onClick={addTimer} className="ButtonSetTime">
+            Add New Timer
         </button>
-        <button onClick={handleReset}>Reset</button>
-      </div>
+
+        <div className="timers-list">
+            {timers.map(timer => (
+                <div key={timer.id} className="timer-item">
+                    <div className="timer-display">
+                        {formatTime(timer.time)}
+                    </div>
+                    <div className="timer-controls">
+                        <button 
+                            onClick={() => timer.isRunning ? stopTimer(timer.id) : startTimer(timer.id)}
+                            className={timer.isRunning ? "ButtonStop" : "ButtonStart"}
+                        >
+                            {timer.isRunning ? 'Stop' : 'Start'}
+                        </button>
+                        <button
+                            onClick={() => resetTimer(timer.id)}
+                            className="ButtonReset"
+                        >
+                            Reset
+                        </button>
+                        <button 
+                            onClick={() => removeTimer(timer.id)}
+                            className="ButtonRemove"
+                        >
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            ))}
+        </div>
     </div>
   );
 }
 
-export default Timer
+export default Timer;

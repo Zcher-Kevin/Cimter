@@ -39,25 +39,41 @@ function Clock() {
     };
 
     return (
-        <div className="container">
-          <div className="row">
-            <div className="col-md-6 offset-md-3">
-              <select 
-                className="form-select mb-3"
-                onChange={addTimezone}
-                defaultValue=""
-              >
-                <option value="">Select a timezone...</option>
-                {moment.tz.names().map(zone => (
-                  <option key={zone} value={zone}>
-                    {zone}
-                  </option>
-                ))}
-              </select>
-            </div>
+      <div className="container">
+      <div className="row">
+        <div className="col-md-6 offset-md-3">
+          <select 
+            className="form-select mb-3"
+            onChange={addTimezone}
+            defaultValue=""
+          >
+            <option value="">Select a timezone...</option>
+            {moment.tz.names().map(zone => (
+              <option key={zone} value={zone}>
+                {zone}
+              </option>
+            ))}
+          </select>
+
+          {/* Add this section to display the clocks */}
+          <div className="clocks-container">
+            {selectedTimezones.map(zone => (
+              <div key={zone} className="clock-item">
+                <h3>{zone}</h3>
+                <p>{currentTime[zone]}</p>
+                <button 
+                  className="btn btn-danger btn-sm"
+                  onClick={() => removeTimezone(zone)}
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
           </div>
         </div>
-    );
+      </div>
+    </div>
+);
 };
     
 export default Clock;

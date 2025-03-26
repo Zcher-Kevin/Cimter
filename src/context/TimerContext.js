@@ -5,50 +5,55 @@ const TimerContext = createContext();
 export function TimerProvider({ children }) {
     const [timers, setTimers] = useState(() => {
         const saved = localStorage.getItem('stopwatches');
-        return saved ? JSON.parse(saved) : [];
+        // Reset isRunning to false on initial load but preserve times
+        return saved ? JSON.parse(saved).map(timer => ({
+            ...timer,
+            isRunning: false // Ensure all timers start stopped
+        })) : [];
     });
     const timerRefs = useRef({});
 
+    // Save timers to localStorage whenever they change
     useEffect(() => {
         localStorage.setItem('stopwatches', JSON.stringify(timers));
-        
-        // Restart running timers when component mounts
-        timers.forEach(timer => {
-            if (timer.isRunning && timer.time > 0) {
-                timerRefs.current[timer.id] = setInterval(() => {
-                    setTimers(prevTimers => {
-                        const updatedTimers = prevTimers.map(t => {
-                            if (t.id === timer.id) {
-                                if (t.time <= 1) {
-                                    clearInterval(timerRefs.current[timer.id]);
-                                    return {...t, time: 0, isRunning: false};
-                                }
-                                return {...t, time: t.time - 1};
-                            }
-                            return t;
-                        });
-                        return updatedTimers;
-                    });
-                }, 1000);
-            }
-        });
+    }, [timers]);
 
-        // Cleanup intervals when component unmounts
+    // Clean up intervals on unmount
+    useEffect(() => {
         return () => {
             Object.values(timerRefs.current).forEach(interval => clearInterval(interval));
+        };
+    }, []);
+
+    // Handle page close/refresh
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            // Stop all timers but preserve their current times
+            setTimers(prevTimers =>
+                prevTimers.map(timer => ({
+                    ...timer,
+                    isRunning: false
+                }))
+            );
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
         };
     }, []);
 
     const startTimer = (id) => {
         const timer = timers.find(t => t.id === id);
         if (!timer.isRunning && timer.time > 0) {
-            setTimers(timers.map(t => 
+            setTimers(prevTimers => prevTimers.map(t => 
                 t.id === id ? {...t, isRunning: true} : t
             ));
             
             timerRefs.current[id] = setInterval(() => {
                 setTimers(prevTimers => {
-                    const updatedTimers = prevTimers.map(t => {
+                    return prevTimers.map(t => {
                         if (t.id === id) {
                             if (t.time <= 1) {
                                 clearInterval(timerRefs.current[id]);
@@ -58,7 +63,6 @@ export function TimerProvider({ children }) {
                         }
                         return t;
                     });
-                    return updatedTimers;
                 });
             }, 1000);
         }

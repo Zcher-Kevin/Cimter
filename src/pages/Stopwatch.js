@@ -59,7 +59,7 @@ function Stopwatch() {
                     Add Timer
                 </button>
             </div>
-
+            <br/>
             <div className="timers-list">
                 {timers.map(timer => (
                     <div key={timer.id} className="timer-item">

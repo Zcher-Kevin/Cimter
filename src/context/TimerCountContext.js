@@ -5,33 +5,38 @@ const TimerCountContext = createContext();
 export function TimerCountProvider({ children }) {
     const [timers, setTimers] = useState(() => {
         const saved = localStorage.getItem('timerCounts');
-        return saved ? JSON.parse(saved) : [];
+        if (saved) {
+            // Reset all isRunning states to false on initial load
+            const parsedTimers = JSON.parse(saved);
+            return parsedTimers.map(timer => ({
+                ...timer,
+                isRunning: false // Ensure all timers start stopped
+            }));
+        }
+        return [];
     });
     
     const intervalRefs = useRef({});
 
-    // Save timers to localStorage whenever they change
     useEffect(() => {
         localStorage.setItem('timerCounts', JSON.stringify(timers));
     }, [timers]);
 
-    // Cleanup intervals when component unmounts
     useEffect(() => {
         return () => {
+            // Cleanup all intervals on unmount
             Object.values(intervalRefs.current).forEach(interval => clearInterval(interval));
         };
     }, []);
 
     const startTimer = (id) => {
         if (!intervalRefs.current[id]) {
-            // Set isRunning to true immediately
             setTimers(prevTimers => 
                 prevTimers.map(t => 
                     t.id === id ? { ...t, isRunning: true } : t
                 )
             );
 
-            // Start the interval
             intervalRefs.current[id] = setInterval(() => {
                 setTimers(prevTimers => {
                     const updatedTimers = prevTimers.map(t => {
@@ -45,7 +50,7 @@ export function TimerCountProvider({ children }) {
             }, 1000);
         }
     };
-
+    
     const stopTimer = (id) => {
         if (intervalRefs.current[id]) {
             clearInterval(intervalRefs.current[id]);
@@ -72,15 +77,39 @@ export function TimerCountProvider({ children }) {
         const newTimer = {
             id: Date.now(),
             time: 0,
-            isRunning: false
+            isRunning: false,
+            lastStopped: null // Add tracking for when timer was last stopped
         };
         setTimers(prevTimers => [...prevTimers, newTimer]);
+    };
+
+    // New function to preserve timer time but reset running state
+    const preserveTimerState = () => {
+        setTimers(prevTimers =>
+            prevTimers.map(timer => ({
+                ...timer,
+                isRunning: false,
+                lastStopped: Date.now()
+            }))
+        );
     };
 
     const removeTimer = (id) => {
         stopTimer(id);
         setTimers(prevTimers => prevTimers.filter(t => t.id !== id));
     };
+
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            preserveTimerState();
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
 
     return (
         <TimerCountContext.Provider value={{

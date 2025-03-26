@@ -11,7 +11,33 @@ export function TimerProvider({ children }) {
 
     useEffect(() => {
         localStorage.setItem('stopwatches', JSON.stringify(timers));
-    }, [timers]);
+        
+        // Restart running timers when component mounts
+        timers.forEach(timer => {
+            if (timer.isRunning && timer.time > 0) {
+                timerRefs.current[timer.id] = setInterval(() => {
+                    setTimers(prevTimers => {
+                        const updatedTimers = prevTimers.map(t => {
+                            if (t.id === timer.id) {
+                                if (t.time <= 1) {
+                                    clearInterval(timerRefs.current[timer.id]);
+                                    return {...t, time: 0, isRunning: false};
+                                }
+                                return {...t, time: t.time - 1};
+                            }
+                            return t;
+                        });
+                        return updatedTimers;
+                    });
+                }, 1000);
+            }
+        });
+
+        // Cleanup intervals when component unmounts
+        return () => {
+            Object.values(timerRefs.current).forEach(interval => clearInterval(interval));
+        };
+    }, []);
 
     const startTimer = (id) => {
         const timer = timers.find(t => t.id === id);

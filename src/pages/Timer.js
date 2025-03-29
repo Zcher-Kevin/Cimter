@@ -66,14 +66,10 @@ function Timer() {
 
     return (
       <div className="timer-container">
-        <button onClick={addTimer} className="ButtonSetTime">
-            Add New Timer
-        </button>
-
         <div className="timers-list">
             {timers.map(timer => (
                 <div key={timer.id} className="timer-item">
-                    <div className="timer-display">
+                    <div className="TimeDisplay">
                         {formatTime(timer.time)}
                     </div>
                     <div className="timer-controls">
@@ -85,19 +81,24 @@ function Timer() {
                         </button>
                         <button
                             onClick={() => resetTimer(timer.id)}
-                            className="ButtonReset"
+                            className="Reset"
                         >
                             Reset
                         </button>
                         <button 
                             onClick={() => removeTimer(timer.id)}
-                            className="ButtonRemove"
+                            className="Remove"
                         >
                             Remove
                         </button>
                     </div>
                 </div>
             ))}
+        </div>
+        <div className= "add-timer-container">
+            <button onClick={addTimer} className="ButtonSetTime">
+                +
+            </button>
         </div>
     </div>
   );

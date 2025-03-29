@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useTimer } from '../context/TimerContext';
 import "../Css/Stopwatch.css";
+import "../Css/Common.css";
 
 function Stopwatch() {
     const [input, setInput] = useState("");
@@ -46,6 +47,38 @@ function Stopwatch() {
 
     return (
         <div className='timer-container'>
+            <div className="Stopwatch-list">
+                {timers.map(timer => (
+                    <div key={timer.id} className="Stopwatch-timer">
+                        <h3 className="TimeDisplay">
+                            {formatTime(timer.time)}
+                        </h3>
+                        <div className="ButtonList">
+                            <button 
+                                onClick={() => startTimer(timer.id)} 
+                                className="Start"
+                                disabled={timer.isRunning}
+                            >
+                                Start
+                            </button>
+                            <button 
+                                onClick={() => stopTimer(timer.id)} 
+                                className="Stop"
+                                disabled={!timer.isRunning}
+                            >
+                                Stop
+                            </button>
+                            <button 
+                                onClick={() => removeTimer(timer.id)} 
+                                className="Remove"
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
             <div className="InputList">
                 <input
                     type="text"
@@ -58,38 +91,6 @@ function Stopwatch() {
                 <button onClick={handleAddTimer} className="ButtonSetTime">
                     Add Timer
                 </button>
-            </div>
-            <br/>
-            <div className="timers-list">
-                {timers.map(timer => (
-                    <div key={timer.id} className="timer-item">
-                        <h3 className="CountUpDownTimeDisplay">
-                            {formatTime(timer.time)}
-                        </h3>
-                        <div className="ButtonList">
-                            <button 
-                                onClick={() => startTimer(timer.id)} 
-                                className="ButtonStart"
-                                disabled={timer.isRunning}
-                            >
-                                Start
-                            </button>
-                            <button 
-                                onClick={() => stopTimer(timer.id)} 
-                                className="ButtonStop"
-                                disabled={!timer.isRunning}
-                            >
-                                Stop
-                            </button>
-                            <button 
-                                onClick={() => removeTimer(timer.id)} 
-                                className="ButtonRemove"
-                            >
-                                Remove
-                            </button>
-                        </div>
-                    </div>
-                ))}
             </div>
         </div>
     );

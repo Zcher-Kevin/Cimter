@@ -15,10 +15,10 @@ function App() {
             <TimerCountProvider>
             <div className="App">
                 <div className = "Menu">
-                    <Button to="/">Home</Button>
-                    <Button to="/clock">Clock</Button>
-                    <Button to="/stopwatch">Stopwatch</Button>
-                    <Button to="/timer">Timer</Button>
+                        <Button to="/">Home</Button>
+                        <Button to="/clock">Clock</Button>
+                        <Button to="/stopwatch">Stopwatch</Button>
+                        <Button to="/timer">Timer</Button>
                 </div>
                 <div className = "Page">
                     <Routes>
@@ -27,6 +27,12 @@ function App() {
                         <Route path="/timer" element={<Timer />} />
                         <Route path="/clock" element={<Clock />} />
                     </Routes>
+                </div>
+                <div className = "Menu">
+                    <Button to="/">Home</Button>
+                    <Button to="/clock">Clock</Button>
+                    <Button to="/stopwatch">Stopwatch</Button>
+                    <Button to="/timer">Timer</Button>
                 </div>
             </div>
             </TimerCountProvider>

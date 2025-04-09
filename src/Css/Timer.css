@@ -50,27 +50,27 @@
   transition: background-color 0.3s;
 }
 
-  .timer-controls {
-    display: flex;
-    gap: 1rem;
-  }
-  
-  button {
-    padding: 0.5rem 1.5rem;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
-    transition: background-color 0.3s;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
+.timer-controls {
+  display: flex;
+  gap: 1rem;
+}
 
-  .add-timer-button {
+button {
+  padding: 0.5rem 1.5rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.add-timer-container {
   position: fixed;
   bottom: 5vh;
   display: flex;
@@ -81,7 +81,7 @@
   z-index: 20;
 }
 
-.ButtonSetTime {
+.AddTimerButton {
   display: flex;
   align-items: center;
   justify-content: center;

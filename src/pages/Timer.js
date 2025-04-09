@@ -96,7 +96,7 @@ function Timer() {
             ))}
         </div>
         <div className= "add-timer-container">
-            <button onClick={addTimer} className="ButtonSetTime">
+            <button onClick={addTimer} className="AddTimerButton">
                 +
             </button>
         </div>

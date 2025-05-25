@@ -1,7 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { motion } from 'framer-motion';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// Importing pages and components
 import Home from './pages/Home';
 import Clock from './pages/Clock';
 import Stopwatch from './pages/Stopwatch';
